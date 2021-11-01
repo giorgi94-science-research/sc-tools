@@ -1,10 +1,4 @@
-from sctools.core import (
-    phi_series,
-    phi_series_coeffs,
-    psi_series,
-    psi_series_coeffs,
-    phi,
-)
+import sctools.core as sc
 
 
 def phi_rect_approx(r):
@@ -52,9 +46,9 @@ def inv_phi_rect_approx(r):
 
 def check_phi_approx(x=0.8, n=20, tau1=0.5, tau2=0.5, tau3=0.5):
 
-    coeffs = phi_series_coeffs(n, tau1, tau2, tau3)
+    coeffs = sc.phi_series_coeffs(n, tau1, tau2, tau3)
 
-    phi_approx = phi_series(x, coeffs)
+    phi_approx = sc.phi_series(x, coeffs)
 
     print(phi_approx)
-    print(phi(x, tau1, tau2, tau3))
+    print(sc.phi(x, tau1, tau2, tau3))

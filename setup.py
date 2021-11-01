@@ -23,7 +23,7 @@ setup(
     long_description=README,
     long_description_content_type="text/markdown",
     author="Giorgi Kakulashvili",
-    url=https://github.com/giorgi94/sc-tools",
+    url="https://github.com/giorgi94/sc-tools",
     keywords=["sc", "Schwarz-Christoffel", "conformal modulus", "quadrilateral"],
     platforms=["OS Independent"],
     install_requires=requirements,
