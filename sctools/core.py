@@ -34,6 +34,7 @@ def make_clockwise(vertices: list):
 
 
 def find_angle(a: complex, b: complex, c: complex):
+
     v1 = a - b
     v2 = c - b
 
@@ -42,14 +43,11 @@ def find_angle(a: complex, b: complex, c: complex):
     _cos = (v1.real * v2.real + v1.imag * v2.imag) / _norm
     _sin = (v1.real * v2.imag - v1.imag * v2.real) / _norm
 
-    alpha = acos(abs(_cos)) / pi
+    e = _cos + 1j * _sin
 
-    alpha = (log(_cos + 1j * _sin) / (pi * 1j)).real
+    angle = log(e).imag / pi
 
-    if alpha < 0:
-        alpha = 2 + alpha
-
-    return alpha
+    return angle if angle > 0 else 2 + angle
 
 
 def find_quad_angles(vertices: list):
@@ -236,24 +234,28 @@ def phi_series(x, coeffs):
 
 
 def partition(n: int, k: int) -> list:
-    result = []
+    vertices = []
+
+    def convert(args):
+
+        return (n - sum((k - i) * a for i, a in enumerate(args)), *args[::-1])
 
     def step(*args):
         j = len(args)
 
-        s = sum((k - i) * a for i, a in enumerate(reversed(args)))
+        s = sum((k - i) * a for i, a in enumerate(args))
 
         if j == k - 1:
-            return result.append((n - s, *args))
+            return vertices.append(convert(args))
 
         m = (n - s) // (k - j)
 
         for a in range(m + 1):
-            step(a, *args)
+            step(*args, a)
 
-    k > 0 and step()
+    step()
 
-    return result
+    return vertices
 
 
 def psi_series_coeffs(phi_coeffs: list):
