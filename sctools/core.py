@@ -234,28 +234,17 @@ def phi_series(x, coeffs):
 
 
 def partition(n: int, k: int) -> list:
-    vertices = []
 
-    def convert(args):
+    if k == 1:
+        return [(n,)]
 
-        return (n - sum((k - i) * a for i, a in enumerate(args)), *args[::-1])
+    ans = []
 
-    def step(*args):
-        j = len(args)
+    for j in range(n // k + 1):
+        ans.extend([(*v, j) for v in partition(n - k * j, k - 1)])
 
-        s = sum((k - i) * a for i, a in enumerate(args))
+    return ans
 
-        if j == k - 1:
-            return vertices.append(convert(args))
-
-        m = (n - s) // (k - j)
-
-        for a in range(m + 1):
-            step(*args, a)
-
-    step()
-
-    return vertices
 
 
 def psi_series_coeffs(phi_coeffs: list):
