@@ -1,19 +1,15 @@
-from mpmath import hyper
-import sctools.core as sc
+from mpmath import hyp2f1
+from sctools import Quadrilateral, phi
+
+import sctools.series as sc_series
 
 
-def calc_conformal_moduli(vertices):
+def compare_conformal_moduli_1():
+    """
+    compare with https://arxiv.org/pdf/2103.10237.pdf
+    page 16, table 1
+    """
 
-    vertices = sc.make_clockwise(vertices)
-
-    tau = sc.find_quad_angles(vertices)
-
-    r, A, C = sc.calc_sc_params(vertices, tau, upper_bound=1000)
-
-    return sc.conformal_moduli(r)
-
-
-def compare_conformal_moduli():
     compare = [
         [7 + 5j, -1 + 2j, 1.17336589158553],
         [8 + 3j, -1 + 1j, 0.71853428024898],
@@ -26,56 +22,73 @@ def compare_conformal_moduli():
     ]
 
     for A, B, module in compare:
-        vertices = [(0, 0), (1, 0), (A.real, A.imag), (B.real, B.imag)]
+        vertices = [(B.real, B.imag), (A.real, A.imag), (1, 0), (0, 0)]
 
-        m = calc_conformal_moduli(vertices)
+        quad = Quadrilateral(*vertices)
 
-        print("my module:", "\t", m)
+        r, A, C = quad.sc.calc()
+
+        m = quad.sc.conformal_modulus(r)
+
+        print("caclulated module:", "\t", m)
         print("compare module:", "\t", module)
 
         print()
 
 
-def check_side_lengths(m=2, n=4):
+def compare_conformal_moduli_2():
+    """
+    Heikkala, V., Vamanamurthy, M.K. & Vuorinen,
+    M. Generalized Elliptic Integrals.
+    Comput. Methods Funct. Theory 9, 75–109 (2009).
+    page 84, table 1
+    """
 
-    W = [m + 1j * n, 1j, 0j, 1 + 0j]
+    def check(m, n):
+        vertices = [
+            1 + 0j,
+            0j,
+            1j,
+            m + 1j * n,
+        ]
 
-    vertices = [(z.real, z.imag) for z in W]
-    vertices = sc.make_clockwise(vertices)
-    W = [a + 1j * b for a, b in vertices]
+        points = [(v.real, v.imag) for v in vertices]
 
-    tau1, tau2, tau3, tau4 = sc.find_quad_angles(vertices)
+        quad = Quadrilateral(*points)
 
-    r, A, C = sc.calc_sc_params(vertices, (tau1, tau2, tau3, tau4), upper_bound=50)
+        r, A, C = quad.sc.calc()
 
-    s1 = abs(W[3] - W[0])
-    s2 = abs(W[0] - W[1])
-    s3 = abs(W[1] - W[2])
-    s4 = abs(W[2] - W[3])
+        return quad.sc.conformal_modulus(r)
 
-    scale = abs(C)
-
-    print(s1, scale * sc.side_length_1(r, 1, tau1, tau2, tau3))
-    print(s2, scale * sc.side_length_2(r, 1, tau1, tau2, tau3))
-    print(s3, scale * sc.side_length_3(r, 1, tau1, tau2, tau3))
-    print(s4, scale * sc.side_length_4(r, 1, tau1, tau2, tau3))
+    for m in range(1, 6):
+        for n in range(1, 6):
+            print(f"m={m}, n={n} :", check(m, n))
+        print()
 
 
 def modular_equation():
     a = 0.43
 
-    phi_coeffs = sc.phi_series_coeffs(25, 1 - a, a, 1 - a)
-    psi_coeffs = sc.psi_series_coeffs(phi_coeffs)
+    phi_coeffs = sc_series.phi_series_coeffs(25, 1 - a, a, 1 - a)
+    psi_coeffs = [sc_series.psi_coeff(i, phi_coeffs) for i in range(15)]
 
-    phi_a = lambda x: sc.phi(x, 1 - a, a, 1 - a)
-    psi_a = lambda y: sc.psi_series(y, psi_coeffs)
+    phi_a = lambda x: phi(x, 1 - a, a, 1 - a)
+    psi_a = lambda y: sc_series.psi_series(y, psi_coeffs)
 
-    F = lambda x: hyper([a, 1 - a], [1], 1 - x ** 2) / hyper([a, 1 - a], [1], x ** 2)
+    F = lambda x: hyp2f1(a, 1 - a, 1, 1 - x**2) / hyp2f1(a, 1 - a, 1, x**2)
 
     r = 0.4
     p = 0.5
 
-    s = (1 + psi_a(p * phi_a(1 / r ** 2 - 1))) ** (-0.5)
+    s = (1 + psi_a(p * phi_a(1 / r**2 - 1))) ** (-0.5)
 
     print(F(s))
     print(p * F(r))
+
+
+if __name__ == "__main__":
+
+    # compare_conformal_moduli_1()
+    # compare_conformal_moduli_2()
+
+    modular_equation()

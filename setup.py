@@ -16,7 +16,7 @@ requirements = [
 
 setup(
     name="sc-tools",
-    version="1.0",
+    version="2.0",
     packages=["sctools"],
     description="Tools to work with Schwarz-Christoffel mapping",
     include_package_data=True,
