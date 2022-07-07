@@ -88,7 +88,7 @@ def modular_equation():
 
 if __name__ == "__main__":
 
-    # compare_conformal_moduli_1()
+    compare_conformal_moduli_1()
     # compare_conformal_moduli_2()
 
-    modular_equation()
+    # modular_equation()

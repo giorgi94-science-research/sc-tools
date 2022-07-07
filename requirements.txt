@@ -1,5 +1,1 @@
-numpy>=1.21.3
-sympy>=1.9
 mpmath>=1.2.1
-
-beautifulsoup4>=4.10.0
