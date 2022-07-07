@@ -94,8 +94,8 @@ print_real_and_approx(3.534)
 A modular equation reduces to the generalized modular equation with signature $1/\tau$ and degree $p$ which can be rewritten in the form
 
 $$
-    \frac{{}_{2}F_{1}(1-\tau,\tau;1-\tau;1-s^2)}{{}_{2}F_{1}(1-\tau,\tau;1-\tau;s^2)}=p
-    \frac{{}_{2}F_{1}(1-\tau,\tau;1-\tau;1-l^2)}{{}_{2}F_{1}(1-\tau,\tau;1-\tau;l^2)}
+    \frac{\_{2}F_{1}(1-\tau,\tau;1-\tau;1-s^2)}{\_{2}F_{1}(1-\tau,\tau;1-\tau;s^2)}=p
+    \frac{\_{2}F_{1}(1-\tau,\tau;1-\tau;1-l^2)}{\_{2}F_{1}(1-\tau,\tau;1-\tau;l^2)}
 $$
 
 which can be written using generalized modulus and we can solve it for $s$
