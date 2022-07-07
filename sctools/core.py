@@ -117,6 +117,13 @@ class SC:
 
         return [w1, w2, w3, w4]
 
+    def error_calc(self, A: complex, C: complex, r: float, theta: float = 1.0):
+
+        w1, w2, w3, w4 = self.w1, self.w2, self.w3, self.w4
+        v1, v2, v3, v4 = self.get_vertices(A, C, r, theta)
+
+        return abs(v1 - w1) + abs(v2 - w2) + abs(v3 - w3) + abs(v4 - w4)
+
     def quad(self, z: complex, A: complex, C: complex, r: float, theta: float = 1.0):
 
         tau1, tau2, tau3 = self.tau1, self.tau2, self.tau3
@@ -202,7 +209,7 @@ class Quadrilateral:
             self.find_length(w3, w4),
         )
 
-    def find_quad_angles_degree(self):
+    def get_angles_degree(self):
         tau = [self.tau1, self.tau2, self.tau3, self.tau4]
 
-        return [round(180 * a, 4) for a in tau]
+        return [round(180 * a, 2) for a in tau]
