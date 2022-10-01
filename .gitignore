@@ -17,5 +17,6 @@ Makefile
 /main.py
 
 tmp/
+notes/
 
 .flake8
