@@ -1,3 +1,7 @@
+import sctools.series as sc_series
+from sctools import phi
+
+
 def phi_rect_approx(x):
     return (
         1
@@ -39,3 +43,27 @@ def inv_phi_rect_approx(x):
         + 0.4626527213655051 * (x - 1) ** 14
         - 0.3114696848504541 * (x - 1) ** 15
     )
+
+
+def series_test():
+
+    tau = 0.75
+
+    tau1, tau2, tau3 = 1 - tau, tau, 1 - tau
+
+    tau4 = 2 - (tau1 + tau2 + tau3)
+
+    assert tau4 > 0, "angles are incorrect"
+
+    phi_n_list = sc_series.phi_series_coeffs(10, tau1, tau2, tau3)
+
+    x = 1.34
+
+    print("approx\t", sc_series.phi_series(x, phi_n_list))
+    print("exact\t", phi(x, tau1, tau2, tau3))
+
+    y = phi(x, tau1, tau2, tau3)
+
+    inv_phi_n_list = [sc_series.psi_coeff(i, phi_n_list) for i in range(5)]
+
+    print("inv\t", sc_series.phi_series(y, inv_phi_n_list))
