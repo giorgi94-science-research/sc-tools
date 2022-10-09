@@ -1,6 +1,6 @@
 from collections import deque
 
-from mpmath import beta, hyp2f1, sign
+from mpmath import beta, hyp2f1, sign, mpf
 
 
 def phi(x, tau1, tau2, tau3):
@@ -32,7 +32,7 @@ def find_root(f, err=1e-15, upper_bound=1000, digits=30):
 
     def tonum(a, *b):
         d = "".join([str(i) for i in b])
-        return eval(str(a) + "." + d)
+        return mpf(str(a) + "." + d)
 
     for i in range(upper_bound + 1):
         if sign(f(fl)) != sign(f(fl + 1)):
@@ -43,7 +43,7 @@ def find_root(f, err=1e-15, upper_bound=1000, digits=30):
     if i == upper_bound:
         return None
 
-    if abs(f(fl)) < err:
+    if err is not None and abs(f(fl)) < err:
         return fl
 
     for _ in range(digits):
