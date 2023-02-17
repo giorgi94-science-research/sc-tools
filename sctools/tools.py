@@ -26,7 +26,7 @@ def partition(n: int, k: int) -> list:
     return ans
 
 
-def find_root(f, err=1e-15, upper_bound=1000, digits=30):
+def find_root(f, upper_bound=2, digits=30):
     fl = 0
     fr = []
 
@@ -42,9 +42,6 @@ def find_root(f, err=1e-15, upper_bound=1000, digits=30):
 
     if i == upper_bound:
         return None
-
-    if err is not None and abs(f(fl)) < err:
-        return fl
 
     for _ in range(digits):
         d = 0
